@@ -1,5 +1,5 @@
-const inputContainer = document.getElementById('input-container');
 const countDownForm  = document.getElementById('countdownForm');
+const inputContainer = document.getElementById('input-container');
 const dateEl = document.getElementById('date-picker');
 
 const countdownEl = document.getElementById('countdown');
@@ -31,20 +31,18 @@ function updateDOM() {
     countdownActive = setInterval(() => {
         const now = new Date().getTime();
         const distance = countdownValue - now;
-        console.log('distance: ', distance);
         const days = Math.floor(distance / day);
         const hours = Math.floor(distance % day / hour);
         const minutes = Math.floor((distance % hour) / minute);
         const seconds = Math.floor((distance % minute) / second);
-        console.log(days, hours, minutes, seconds);
         // Hide Input
         inputContainer.hidden = true;
         // If the Countdown has Ended, Show Complete
         if (distance < 0) {
             countdownEl.hidden = true;
             clearInterval(countdownActive);
-            countdownElTitle.textContent = `${countdownTitle} Finished on ${countdownDate}`;
-            countdownEl.hidden = false;
+            completeElInfo.textContent = `${countdownTitle} finished on ${countdownDate}`;
+            completeEl.hidden = false;
             } else {
                 // Else, Show the Countdown in Progress
                 countdownElTitle.textContent = `${countdownTitle}`;
@@ -63,13 +61,17 @@ function updateCountDown(e) {
     e.preventDefault();
     countdownTitle = e.srcElement[0].value;
     countdownDate = e.srcElement[1].value;
+    savedCountdown = {
+        title: countdownTitle,
+        date: countdownDate,
+    };
+    localStorage.setItem('countdown', JSON.stringify(savedCountdown));
     //Check for Valid Date
     if (countdownDate === '') {
         alert('Please select a date for the countdown.');
     } else {
         // Get Number Version of Current Date, Update DOM
         countdownValue = new Date(countdownDate).getTime();
-        console.log('countdownValue: ', countdownValue);
         updateDOM();
     }
 }
