@@ -1,1 +1,1 @@
-# custom-countdown
+# Custom Countdown
